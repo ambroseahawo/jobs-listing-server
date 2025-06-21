@@ -14,6 +14,10 @@ class EnvironmentVariables {
 
   @IsNotEmpty()
   @IsString()
+  NODE_ENV: string;
+
+  @IsNotEmpty()
+  @IsString()
   DB_PASSWORD: string;
 
   @IsNotEmpty()
