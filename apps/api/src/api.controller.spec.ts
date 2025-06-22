@@ -1,8 +1,8 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ApiGatewayController } from './api-gateway.controller';
-import { ApiGatewayService } from './api-gateway.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { ApiGatewayController } from "./api.controller";
+import { ApiGatewayService } from "./api.service";
 
-describe('ApiGatewayController', () => {
+describe("ApiGatewayController", () => {
   let apiGatewayController: ApiGatewayController;
 
   beforeEach(async () => {
@@ -14,9 +14,9 @@ describe('ApiGatewayController', () => {
     apiGatewayController = app.get<ApiGatewayController>(ApiGatewayController);
   });
 
-  describe('root', () => {
+  describe("root", () => {
     it('should return "Hello World!"', () => {
-      expect(apiGatewayController.getHello()).toBe('Hello World!');
+      expect(apiGatewayController.getHello()).toBe("Hello World!");
     });
   });
 });
