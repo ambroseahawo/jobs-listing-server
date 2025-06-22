@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  password       String
+  sessions       Session[]
+  profile        UserProfile?
+  companyMembers CompanyMember[]
+  preference     UserPreference?
+  skills         UserSkill[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  isValid   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+}
+
+model UserProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  firstName   String?
+  lastName    String?
+  bio         String?
+  avatar      String?
+  phone       String?
+  location    String?
+  jobTitle    String?
+  experience  Json?
+  education   Json?
+  socialLinks Json?
+  isPublic    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model CompanyProfile {
+  id          String          @id @default(uuid())
+  companyName String
+  website     String?
+  bio         String?
+  logo        String?
+  location    String?
+  industry    String?
+  size        Int?
+  founded     Int?
+  socialLinks Json?
+  isPublic    Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  members     CompanyMember[]
+  roles       Role[]
+}
+
+model UserPreference {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id])
+  emailNotifications Boolean  @default(true)
+  pushNotifications  Boolean  @default(true)
+  theme              String   @default("light")
+  language           String   @default("en")
+  timezone           String   @default("UTC")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Skill {
+  id    String      @id @default(uuid())
+  name  String      @unique
+  users UserSkill[]
+}
+
+model UserSkill {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  skill   Skill  @relation(fields: [skillId], references: [id])
+  skillId String
+
+  @@unique([userId, skillId])
+}
+
+model Role {
+  id        String          @id @default(uuid())
+  name      String
+  company   CompanyProfile  @relation(fields: [companyId], references: [id])
+  companyId String
+  members   CompanyMember[]
+
+  @@unique([companyId, name])
+}
+
+model CompanyMember {
+  id        String         @id @default(uuid())
+  user      User           @relation(fields: [userId], references: [id])
+  userId    String
+  company   CompanyProfile @relation(fields: [companyId], references: [id])
+  companyId String
+  role      Role           @relation(fields: [roleId], references: [id])
+  roleId    String
+
+  @@unique([userId, companyId])
+}
