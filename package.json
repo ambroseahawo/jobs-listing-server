@@ -28,7 +28,9 @@
     "@prisma/client": "^6.10.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "module-alias": "^2.2.3",
     "prisma": "^6.10.1",
+    "redis": "^5.5.6",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
@@ -75,5 +77,13 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@src": "src",
+    "@modules": "src/modules",
+    "@config": "src/config",
+    "@utils/*": "src/utils/*",
+    "@common/*": "src/common/*"
   }
 }
