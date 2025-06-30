@@ -125,3 +125,23 @@ model CompanyMember {
 
   @@unique([userId, companyId])
 }
+
+model Job {
+  id                   String  @id @default(uuid())
+  jobId                String
+  title                String
+  descriptionCleanText String
+  descriptionRawHtml   String
+  company              String
+  logoUrl              String?
+  country              String
+  city                 String
+  datePosted           String
+  jobType              String?
+  workArrangement      String?
+  minSalary            String?
+  maxSalary            String?
+  postingUrl           String?
+  applyUrl             String?
+  isEasyApply          Boolean @default(false)
+}
